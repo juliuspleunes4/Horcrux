@@ -1,0 +1,52 @@
+example
+example/
+example/horcrux/
+example/horcrux
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Dependency directories
+node_modules/
+bower_components/
+.venv/
+venv/
+env/
+
+# Build output
+dist/
+build/
+coverage/
+out/
+target/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Java/IDE
+*.class
+*.jar
+*.war
+*.ear
+
+# Editors/IDEs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Misc
+.cache/
+.pnpm-debug.log*
