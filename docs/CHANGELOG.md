@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2025-11-15
+
+### Improved
+- **Interactive CLI Input Validation**: Rock-solid error handling for all user inputs
+  - All input functions now wrapped in comprehensive try-except blocks
+  - Invalid inputs no longer crash the application - users are re-prompted instead
+  - Added validation for output directory paths (checks parent directory exists, prevents file paths)
+  - Added validation for output file paths (checks parent directory exists, prevents directory paths)
+  - Empty input validation for number prompts
+  - Handles EOF errors gracefully (e.g., piped input scenarios)
+  - Keyboard interrupts (Ctrl+C) handled properly throughout
+  - Users never lose progress from previous steps due to input errors
+  - Clear, color-coded error messages guide users to correct their input
+  - Improved user experience: no forced restarts, no crashes from typos or invalid paths
+
 ## [1.1.0] - 2025-11-15
 
 ### Added
