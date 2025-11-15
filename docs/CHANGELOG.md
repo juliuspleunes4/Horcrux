@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2025-11-15
+
+### Improved
+- **Interactive CLI Input Validation**: Rock-solid error handling for all user inputs
+  - All input functions now wrapped in comprehensive try-except blocks
+  - Invalid inputs no longer crash the application - users are re-prompted instead
+  - Added validation for output directory paths (checks parent directory exists, prevents file paths)
+  - Added validation for output file paths (checks parent directory exists, prevents directory paths)
+  - Empty input validation for number prompts
+  - Handles EOF errors gracefully (e.g., piped input scenarios)
+  - Keyboard interrupts (Ctrl+C) handled properly throughout
+  - Users never lose progress from previous steps due to input errors
+  - Clear, color-coded error messages guide users to correct their input
+  - Improved user experience: no forced restarts, no crashes from typos or invalid paths
+
+## [1.1.0] - 2025-11-15
+
+### Added
+- **Interactive CLI Mode**: Beautiful, user-friendly interface for non-technical users
+  - `hrcx interactive` command launches a guided wizard-style interface
+  - Large ocean-blue ASCII art header with version and links
+  - Color-coded menus and prompts for easy navigation (green for success, red for errors, yellow for warnings, cyan for info)
+  - Step-by-step workflows for both splitting and binding operations
+  - Automatic file discovery and validation with helpful error messages
+  - Smart defaults and confirmations to prevent mistakes
+  - Windows batch file (`horcrux.bat`) for one-click launch without technical knowledge
+  - Comprehensive input validation and error handling
+  - Option to perform multiple operations in one session
+  - Graceful handling of user cancellation (Ctrl+C)
+
 ## [1.0.0] - 2025-11-15
 
 **🎉 Initial Release - Published to PyPI**

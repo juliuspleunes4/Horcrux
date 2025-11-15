@@ -10,6 +10,7 @@ import click
 
 from . import api
 from .horcrux import find_horcrux_files
+from .interactive import main as interactive_main
 
 
 @click.group()
@@ -112,6 +113,17 @@ def bind(directory: str, output: str | None, force: bool) -> None:
     except Exception as e:
         click.echo(f"❌ Error: {e}", err=True)
         sys.exit(1)
+
+
+@main.command()
+def interactive() -> None:
+    """
+    Launch interactive mode with a user-friendly GUI-like interface.
+    
+    Perfect for non-technical users who prefer a step-by-step wizard.
+    Features beautiful ASCII art, color-coded prompts, and helpful guidance.
+    """
+    interactive_main()
 
 
 if __name__ == "__main__":

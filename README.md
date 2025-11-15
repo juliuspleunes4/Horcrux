@@ -17,6 +17,7 @@ Horcrux is a file encryption and splitting tool that divides your sensitive file
 - 🎯 **No Passwords**: No need to remember complex passphrases years later
 - 📦 **Easy Distribution**: Spread horcruxes across multiple locations/media
 - 🚀 **Simple CLI**: Intuitive command-line interface
+- 🎨 **Interactive Mode**: Beautiful GUI-like interface for non-technical users
 - 🔄 **Cross-platform**: Works on Windows, macOS, and Linux
 - 📊 **Metadata Preservation**: Maintains original filename and timestamp information
 
@@ -159,6 +160,35 @@ hrcx bind -f
 # Specify output location
 hrcx bind -o ./recovered/secret.pdf
 ```
+
+### Interactive Mode
+
+For non-technical users, Horcrux offers a beautiful interactive mode with a guided wizard:
+
+```bash
+hrcx interactive
+```
+
+**Features:**
+- 🎨 Beautiful ocean-blue ASCII art header
+- 🎯 Step-by-step guided workflows
+- 🌈 Color-coded prompts (green for success, red for errors, yellow for warnings)
+- ✅ Automatic validation of all inputs
+- 📁 Smart file discovery and defaults
+- 🔄 Perform multiple operations in one session
+
+**Windows Users:** Simply double-click the `horcrux.bat` file to launch interactive mode without opening a terminal!
+
+**Interactive mode walkthrough:**
+
+1. Choose between **Split** or **Bind** operations
+2. Follow the color-coded prompts:
+   - **Split**: Select file → Set total horcruxes → Set threshold → Choose output directory
+   - **Bind**: Select horcrux directory → Confirm reconstruction → Choose output location
+3. Review the summary and confirm
+4. Watch as your operation completes with visual feedback
+
+Perfect for users who prefer a GUI-like experience or are new to command-line tools!
 
 ## 🔬 How It Works
 
