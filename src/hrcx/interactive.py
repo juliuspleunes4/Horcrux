@@ -129,10 +129,37 @@ def get_file_path(prompt: str, must_exist: bool = True) -> str:
                 print()
                 continue
             
+            # Handle common folder shortcuts (case-insensitive)
+            path_lower = path.lower()
+            common_folders = {
+                'desktop': os.path.join(os.path.expanduser('~'), 'Desktop'),
+                'downloads': os.path.join(os.path.expanduser('~'), 'Downloads'),
+                'documents': os.path.join(os.path.expanduser('~'), 'Documents'),
+                'pictures': os.path.join(os.path.expanduser('~'), 'Pictures'),
+                'videos': os.path.join(os.path.expanduser('~'), 'Videos'),
+                'music': os.path.join(os.path.expanduser('~'), 'Music'),
+            }
+            
+            # Check if path starts with a common folder name
+            for folder_name, folder_path in common_folders.items():
+                if path_lower.startswith(folder_name + '\\') or path_lower.startswith(folder_name + '/'):
+                    # Replace the folder name with the actual path
+                    remaining_path = path[len(folder_name)+1:]
+                    path = os.path.join(folder_path, remaining_path)
+                    break
+            
+            # Expand user home directory (~)
+            path = os.path.expanduser(path)
+            
+            # Expand environment variables
+            path = os.path.expandvars(path)
+            
+            # Convert to absolute path
             abs_path = os.path.abspath(path)
             
             if must_exist and not os.path.exists(abs_path):
                 print_error(f"File or directory does not exist: {abs_path}")
+                print_info(f"Tip: Try 'Desktop\\file.txt', '~\\Desktop\\file.txt', or full path")
                 print()
                 continue
             
@@ -170,10 +197,41 @@ def get_directory_path(prompt: str, must_exist: bool = False) -> str:
                 print()
                 continue
             
+            # Handle common folder shortcuts (case-insensitive)
+            path_lower = path.lower()
+            common_folders = {
+                'desktop': os.path.join(os.path.expanduser('~'), 'Desktop'),
+                'downloads': os.path.join(os.path.expanduser('~'), 'Downloads'),
+                'documents': os.path.join(os.path.expanduser('~'), 'Documents'),
+                'pictures': os.path.join(os.path.expanduser('~'), 'Pictures'),
+                'videos': os.path.join(os.path.expanduser('~'), 'Videos'),
+                'music': os.path.join(os.path.expanduser('~'), 'Music'),
+            }
+            
+            # Check if path starts with a common folder name
+            for folder_name, folder_path in common_folders.items():
+                if path_lower.startswith(folder_name + '\\') or path_lower.startswith(folder_name + '/'):
+                    # Replace the folder name with the actual path
+                    remaining_path = path[len(folder_name)+1:]
+                    path = os.path.join(folder_path, remaining_path)
+                    break
+                elif path_lower == folder_name:
+                    # User just typed the folder name
+                    path = folder_path
+                    break
+            
+            # Expand user home directory (~)
+            path = os.path.expanduser(path)
+            
+            # Expand environment variables
+            path = os.path.expandvars(path)
+            
+            # Convert to absolute path
             abs_path = os.path.abspath(path)
             
             if must_exist and not os.path.exists(abs_path):
                 print_error(f"Directory does not exist: {abs_path}")
+                print_info(f"Tip: Try 'Desktop', 'Downloads', or '~\\Desktop'")
                 print()
                 continue
             
