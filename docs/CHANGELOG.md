@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2025-11-15
+
+### Added
+- **Interactive CLI Mode**: Beautiful, user-friendly interface for non-technical users
+  - `hrcx interactive` command launches a guided wizard-style interface
+  - Large ocean-blue ASCII art header with version and links
+  - Color-coded menus and prompts for easy navigation (green for success, red for errors, yellow for warnings, cyan for info)
+  - Step-by-step workflows for both splitting and binding operations
+  - Automatic file discovery and validation with helpful error messages
+  - Smart defaults and confirmations to prevent mistakes
+  - Windows batch file (`horcrux.bat`) for one-click launch without technical knowledge
+  - Comprehensive input validation and error handling
+  - Option to perform multiple operations in one session
+  - Graceful handling of user cancellation (Ctrl+C)
+
 ## [1.0.0] - 2025-11-15
 
 **🎉 Initial Release - Published to PyPI**
