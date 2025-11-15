@@ -463,6 +463,35 @@ def interactive_bind() -> None:
                     print(f"{Fore.LIGHTBLACK_EX}   Using: {output_path}{Style.RESET_ALL}")
                     break
                 
+                # Handle common folder shortcuts (case-insensitive)
+                output_path_lower = output_path.lower()
+                common_folders = {
+                    'desktop': os.path.join(os.path.expanduser('~'), 'Desktop'),
+                    'downloads': os.path.join(os.path.expanduser('~'), 'Downloads'),
+                    'documents': os.path.join(os.path.expanduser('~'), 'Documents'),
+                    'pictures': os.path.join(os.path.expanduser('~'), 'Pictures'),
+                    'videos': os.path.join(os.path.expanduser('~'), 'Videos'),
+                    'music': os.path.join(os.path.expanduser('~'), 'Music'),
+                }
+                
+                # Check if path starts with a common folder name
+                for folder_name, folder_path in common_folders.items():
+                    if output_path_lower.startswith(folder_name + '\\') or output_path_lower.startswith(folder_name + '/'):
+                        # Replace the folder name with the actual path
+                        remaining_path = output_path[len(folder_name)+1:]
+                        output_path = os.path.join(folder_path, remaining_path)
+                        break
+                    elif output_path_lower == folder_name:
+                        # User just typed the folder name - append the original filename
+                        output_path = os.path.join(folder_path, header.original_filename)
+                        break
+                
+                # Expand user home directory (~)
+                output_path = os.path.expanduser(output_path)
+                
+                # Expand environment variables
+                output_path = os.path.expandvars(output_path)
+                
                 # Validate output path
                 output_path = os.path.abspath(output_path)
                 
