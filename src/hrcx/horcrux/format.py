@@ -127,10 +127,13 @@ def create_horcrux_header(
 
     header_json = json.dumps(header.to_dict(), indent=2)
 
+    # Calculate how many more horcruxes are needed (threshold - 1 since we have this one)
+    others_needed = threshold - 1
+    
     banner = f"""# THIS FILE IS A HORCRUX.
 # IT IS ONE OF {total} HORCRUXES THAT EACH CONTAIN PART OF AN ORIGINAL FILE.
 # THIS IS HORCRUX NUMBER {index}.
-# IN ORDER TO RESURRECT THIS ORIGINAL FILE YOU MUST FIND THE OTHER {total - 1} HORCRUX(ES) AND THEN BIND THEM USING THE HRCX PROGRAM
+# IN ORDER TO RESURRECT THIS ORIGINAL FILE YOU MUST FIND AT LEAST {others_needed} OTHER HORCRUX(ES) AND THEN BIND THEM USING THE HRCX PROGRAM
 # https://pypi.org/project/hrcx/
 
 -- HEADER --
