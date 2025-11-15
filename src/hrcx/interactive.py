@@ -92,14 +92,20 @@ def get_choice(prompt: str, options: List[str]) -> str:
         The validated user choice (lowercase)
     """
     while True:
-        print_prompt(f"{prompt} ")
-        choice = input().strip().lower()
-        
-        if choice in [opt.lower() for opt in options]:
-            return choice
-        
-        print_error(f"Invalid choice. Please choose from: {', '.join(options)}")
-        print()
+        try:
+            print_prompt(f"{prompt} ")
+            choice = input().strip().lower()
+            
+            if choice in [opt.lower() for opt in options]:
+                return choice
+            
+            print_error(f"Invalid choice. Please choose from: {', '.join(options)}")
+            print()
+        except (EOFError, KeyboardInterrupt):
+            raise
+        except Exception as e:
+            print_error(f"Input error: {str(e)}")
+            print()
 
 
 def get_file_path(prompt: str, must_exist: bool = True) -> str:
@@ -114,27 +120,33 @@ def get_file_path(prompt: str, must_exist: bool = True) -> str:
         The validated absolute file path
     """
     while True:
-        print_prompt(f"{prompt} ")
-        path = input().strip().strip('"').strip("'")
-        
-        if not path:
-            print_error("Path cannot be empty.")
+        try:
+            print_prompt(f"{prompt} ")
+            path = input().strip().strip('"').strip("'")
+            
+            if not path:
+                print_error("Path cannot be empty.")
+                print()
+                continue
+            
+            abs_path = os.path.abspath(path)
+            
+            if must_exist and not os.path.exists(abs_path):
+                print_error(f"File or directory does not exist: {abs_path}")
+                print()
+                continue
+            
+            if must_exist and not os.path.isfile(abs_path):
+                print_error(f"Path is not a file: {abs_path}")
+                print()
+                continue
+            
+            return abs_path
+        except (EOFError, KeyboardInterrupt):
+            raise
+        except Exception as e:
+            print_error(f"Input error: {str(e)}")
             print()
-            continue
-        
-        abs_path = os.path.abspath(path)
-        
-        if must_exist and not os.path.exists(abs_path):
-            print_error(f"File or directory does not exist: {abs_path}")
-            print()
-            continue
-        
-        if must_exist and not os.path.isfile(abs_path):
-            print_error(f"Path is not a file: {abs_path}")
-            print()
-            continue
-        
-        return abs_path
 
 
 def get_directory_path(prompt: str, must_exist: bool = False) -> str:
@@ -149,27 +161,33 @@ def get_directory_path(prompt: str, must_exist: bool = False) -> str:
         The validated absolute directory path
     """
     while True:
-        print_prompt(f"{prompt} ")
-        path = input().strip().strip('"').strip("'")
-        
-        if not path:
-            print_error("Path cannot be empty.")
+        try:
+            print_prompt(f"{prompt} ")
+            path = input().strip().strip('"').strip("'")
+            
+            if not path:
+                print_error("Path cannot be empty.")
+                print()
+                continue
+            
+            abs_path = os.path.abspath(path)
+            
+            if must_exist and not os.path.exists(abs_path):
+                print_error(f"Directory does not exist: {abs_path}")
+                print()
+                continue
+            
+            if must_exist and not os.path.isdir(abs_path):
+                print_error(f"Path is not a directory: {abs_path}")
+                print()
+                continue
+            
+            return abs_path
+        except (EOFError, KeyboardInterrupt):
+            raise
+        except Exception as e:
+            print_error(f"Input error: {str(e)}")
             print()
-            continue
-        
-        abs_path = os.path.abspath(path)
-        
-        if must_exist and not os.path.exists(abs_path):
-            print_error(f"Directory does not exist: {abs_path}")
-            print()
-            continue
-        
-        if must_exist and not os.path.isdir(abs_path):
-            print_error(f"Path is not a directory: {abs_path}")
-            print()
-            continue
-        
-        return abs_path
 
 
 def get_number(prompt: str, min_val: int, max_val: int) -> int:
@@ -185,10 +203,15 @@ def get_number(prompt: str, min_val: int, max_val: int) -> int:
         The validated number
     """
     while True:
-        print_prompt(f"{prompt} ({min_val}-{max_val}): ")
-        value = input().strip()
-        
         try:
+            print_prompt(f"{prompt} ({min_val}-{max_val}): ")
+            value = input().strip()
+            
+            if not value:
+                print_error("Please enter a number.")
+                print()
+                continue
+            
             num = int(value)
             if min_val <= num <= max_val:
                 return num
@@ -197,6 +220,11 @@ def get_number(prompt: str, min_val: int, max_val: int) -> int:
                 print()
         except ValueError:
             print_error("Please enter a valid number.")
+            print()
+        except (EOFError, KeyboardInterrupt):
+            raise
+        except Exception as e:
+            print_error(f"Input error: {str(e)}")
             print()
 
 
@@ -233,14 +261,42 @@ def interactive_split() -> None:
     # Get output directory
     print_info("Where should the horcruxes be saved?")
     print(f"{Fore.LIGHTBLACK_EX}   (Press Enter for same directory as input file){Style.RESET_ALL}")
-    print_prompt("📁 Output directory (or press Enter): ")
-    output_dir = input().strip().strip('"').strip("'")
     
-    if output_dir:
-        output_dir = os.path.abspath(output_dir)
-    else:
-        output_dir = None
-        print(f"{Fore.LIGHTBLACK_EX}   Using input file directory{Style.RESET_ALL}")
+    while True:
+        try:
+            print_prompt("📁 Output directory (or press Enter): ")
+            output_dir = input().strip().strip('"').strip("'")
+            
+            if not output_dir:
+                output_dir = None
+                print(f"{Fore.LIGHTBLACK_EX}   Using input file directory{Style.RESET_ALL}")
+                break
+            
+            # Validate the output directory
+            abs_output_dir = os.path.abspath(output_dir)
+            
+            # Check if parent directory exists (we can create the final dir if needed)
+            parent_dir = os.path.dirname(abs_output_dir) if not os.path.dirname(abs_output_dir) == abs_output_dir else abs_output_dir
+            
+            if not os.path.exists(parent_dir):
+                print_error(f"Parent directory does not exist: {parent_dir}")
+                print()
+                continue
+            
+            # Check if it's not an existing file
+            if os.path.exists(abs_output_dir) and os.path.isfile(abs_output_dir):
+                print_error(f"Path is a file, not a directory: {abs_output_dir}")
+                print()
+                continue
+            
+            output_dir = abs_output_dir
+            break
+        except (EOFError, KeyboardInterrupt):
+            raise
+        except Exception as e:
+            print_error(f"Input error: {str(e)}")
+            print()
+    
     print()
     
     # Confirm and execute
@@ -338,14 +394,40 @@ def interactive_bind() -> None:
         # Get output path
         print_info("Where should the reconstructed file be saved?")
         print(f"{Fore.LIGHTBLACK_EX}   (Press Enter to use: {header.original_filename}){Style.RESET_ALL}")
-        print_prompt("💾 Output file path (or press Enter): ")
-        output_path = input().strip().strip('"').strip("'")
         
-        if not output_path:
-            output_path = os.path.join(directory, header.original_filename)
-            print(f"{Fore.LIGHTBLACK_EX}   Using: {output_path}{Style.RESET_ALL}")
-        else:
-            output_path = os.path.abspath(output_path)
+        while True:
+            try:
+                print_prompt("💾 Output file path (or press Enter): ")
+                output_path = input().strip().strip('"').strip("'")
+                
+                if not output_path:
+                    output_path = os.path.join(directory, header.original_filename)
+                    print(f"{Fore.LIGHTBLACK_EX}   Using: {output_path}{Style.RESET_ALL}")
+                    break
+                
+                # Validate output path
+                output_path = os.path.abspath(output_path)
+                
+                # Check if parent directory exists
+                parent_dir = os.path.dirname(output_path)
+                if parent_dir and not os.path.exists(parent_dir):
+                    print_error(f"Parent directory does not exist: {parent_dir}")
+                    print()
+                    continue
+                
+                # Check if it's not an existing directory
+                if os.path.exists(output_path) and os.path.isdir(output_path):
+                    print_error(f"Path is a directory, not a file: {output_path}")
+                    print()
+                    continue
+                
+                break
+            except (EOFError, KeyboardInterrupt):
+                raise
+            except Exception as e:
+                print_error(f"Input error: {str(e)}")
+                print()
+        
         print()
         
         # Check if file exists
