@@ -1,0 +1,8 @@
+# Production dependencies for hrcx
+# These are the runtime requirements for the Horcrux package
+
+# Cryptography library for AES-256-GCM encryption
+cryptography>=41.0.0
+
+# CLI framework
+click>=8.0.0
