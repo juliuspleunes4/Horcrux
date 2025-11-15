@@ -61,7 +61,7 @@ pip install -e .
 
 ```bash
 # Split diary.txt into 5 horcruxes (any 3 required to reconstruct)
-hrcx split diary.txt --total 5 --threshold 3
+hrcx split diary.txt -t 5 -k 3
 
 # Output:
 # ✓ Created diary_1_of_5.hrcx
