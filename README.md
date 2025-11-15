@@ -61,14 +61,14 @@ pip install -e .
 
 ```bash
 # Split diary.txt into 5 horcruxes (any 3 required to reconstruct)
-hrcx split diary.txt --total 5 --threshold 3
+hrcx split diary.txt -t 5 -k 3
 
 # Output:
-# ✓ Created diary_1_of_5.horcrux
-# ✓ Created diary_2_of_5.horcrux
-# ✓ Created diary_3_of_5.horcrux
-# ✓ Created diary_4_of_5.horcrux
-# ✓ Created diary_5_of_5.horcrux
+# ✓ Created diary_1_of_5.hrcx
+# ✓ Created diary_2_of_5.hrcx
+# ✓ Created diary_3_of_5.hrcx
+# ✓ Created diary_4_of_5.hrcx
+# ✓ Created diary_5_of_5.hrcx
 ```
 
 ### Bind Horcruxes Back
@@ -87,6 +87,22 @@ hrcx bind ./horcruxes
 ```
 
 ## 📖 Usage
+
+### Getting Help
+
+```bash
+# Show help for main command
+hrcx --help
+
+# Show help for split command
+hrcx split --help
+
+# Show help for bind command
+hrcx bind --help
+
+# Check version
+hrcx --version
+```
 
 ### Split Command
 
@@ -211,48 +227,72 @@ pip install hrcx
 ```python
 from hrcx import split, bind
 
-// Split a file
-await split({
-  filePath: './secret.txt',
-  total: 5,
-  threshold: 3,
-  outputDir: './horcruxes'
-});
+# Split a file
+split(
+    file_path='./secret.txt',
+    total=5,
+    threshold=3,
+    output_dir='./horcruxes'
+)
 
-// Bind horcruxes
-await bind({
-  horcruxPaths: ['./horcruxes/secret_1_of_5.horcrux', /* ... */],
-  outputPath: './recovered.txt'
-});
+# Bind horcruxes
+bind(
+    horcrux_paths=['./horcruxes/secret_1_of_5.hrcx', './horcruxes/secret_2_of_5.hrcx', './horcruxes/secret_3_of_5.hrcx'],
+    output_path='./recovered.txt'
+)
 ```
 
 ### API Reference
 
-#### `split(options: SplitOptions): Promise<void>`
+#### `split(file_path: str, total: int, threshold: int, output_dir: Optional[str] = None) -> None`
 
 Splits a file into encrypted horcruxes.
 
 **Parameters:**
-```typescript
-interface SplitOptions {
-  filePath: string;        // Path to file to split
-  total: number;           // Total number of horcruxes
-  threshold: number;       // Minimum needed to reconstruct
-  outputDir?: string;      // Output directory (default: file directory)
-}
+- `file_path` (str): Path to the file to split
+- `total` (int): Total number of horcruxes to create (must be >= threshold)
+- `threshold` (int): Minimum number of horcruxes needed to reconstruct (must be >= 2)
+- `output_dir` (Optional[str]): Output directory for horcruxes (default: same directory as input file)
+
+**Raises:**
+- `FileNotFoundError`: If the input file doesn't exist
+- `ValueError`: If total < threshold or threshold < 2
+- `PermissionError`: If unable to write to output directory
+
+**Example:**
+```python
+from hrcx import split
+
+split('secret.pdf', total=7, threshold=4, output_dir='./vault')
 ```
 
-#### `bind(options: BindOptions): Promise<void>`
+#### `bind(horcrux_paths: Optional[List[str]] = None, output_path: Optional[str] = None, overwrite: bool = False) -> None`
 
 Reconstructs the original file from horcruxes.
 
 **Parameters:**
-```typescript
-interface BindOptions {
-  horcruxPaths: string[];  // Paths to horcrux files
-  outputPath?: string;     // Output file path (default: original name)
-  overwrite?: boolean;     // Overwrite existing file
-}
+- `horcrux_paths` (Optional[List[str]]): List of paths to horcrux files. If None, auto-discovers horcruxes in current directory
+- `output_path` (Optional[str]): Output file path (default: original filename from horcrux metadata)
+- `overwrite` (bool): Whether to overwrite existing file without prompting (default: False)
+
+**Raises:**
+- `FileNotFoundError`: If no horcrux files found
+- `ValueError`: If insufficient horcruxes or incompatible horcruxes provided
+- `RuntimeError`: If decryption fails or file integrity check fails
+
+**Example:**
+```python
+from hrcx import bind
+
+# Auto-discover horcruxes in current directory
+bind()
+
+# Specify horcruxes explicitly
+bind(
+    horcrux_paths=['./vault/secret_1_of_7.hrcx', './vault/secret_4_of_7.hrcx', './vault/secret_6_of_7.hrcx', './vault/secret_7_of_7.hrcx'],
+    output_path='./recovered.pdf',
+    overwrite=True
+)
 ```
 
 ## 🛠 Development
