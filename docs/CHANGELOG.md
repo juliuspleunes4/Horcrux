@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.0] - 2025-11-15
 
+**🎉 Initial Release - Published to PyPI**
+
 ### Added
 - **Shamir's Secret Sharing**: Complete implementation over GF(256) with polynomial interpolation
   - `split()` function: Split secrets into N shares with K threshold
