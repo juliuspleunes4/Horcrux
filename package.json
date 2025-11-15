@@ -1,0 +1,68 @@
+{
+  "name": "hrcx",
+  "version": "1.0.0",
+  "description": "Split your files into encrypted fragments.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "hrcx": "dist/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\"",
+    "prepublishOnly": "npm run build && npm test",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "encryption",
+    "shamir",
+    "secret-sharing",
+    "security",
+    "cryptography",
+    "file-splitting",
+    "horcrux",
+    "threshold-cryptography",
+    "aes",
+    "cli"
+  ],
+  "author": "Your Name <your.email@example.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juliuspleunes4/horcrux.git"
+  },
+  "bugs": {
+    "url": "https://github.com/juliuspleunes4/horcrux/issues"
+  },
+  "homepage": "https://github.com/juliuspleunes4/horcrux#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "commander": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "eslint": "^8.54.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "jest": "^29.7.0",
+    "prettier": "^3.1.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.3.2"
+  }
+}

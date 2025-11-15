@@ -1,7 +1,57 @@
-example
+# Example project (Go implementation for reference)
 example/
-example/horcrux/
-example/horcrux
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+.hypothesis/
+
+# Type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+
+# Environment
+.env
+.env.local
+.env.*.local
 
 # OS files
 .DS_Store
@@ -9,43 +59,30 @@ Thumbs.db
 
 # Logs
 *.log
-
-# Environment
-.env
-.env.local
-.env.*.local
-
-# Dependency directories
-node_modules/
-bower_components/
-.venv/
-venv/
-env/
-
-# Build output
-dist/
-build/
-coverage/
-out/
-target/
-
-# Python
-__pycache__/
-*.py[cod]
-
-# Java/IDE
-*.class
-*.jar
-*.war
-*.ear
+pip-log.txt
+pip-delete-this-directory.txt
 
 # Editors/IDEs
 .vscode/
 .idea/
+*.swp
+*.swo
+*~
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Example horcrux files (for testing)
+*.horcrux
+
+# Ruff
+.ruff_cache/
 
 # Misc
 .cache/
