@@ -20,7 +20,7 @@ from hrcx.horcrux.format import find_horcrux_files
 init(autoreset=True)
 
 # Version info
-VERSION = "1.2.0"
+VERSION = "1.2.2"
 PYPI_URL = "https://pypi.org/project/hrcx/"
 GITHUB_URL = "https://github.com/juliuspleunes4/Horcrux"
 

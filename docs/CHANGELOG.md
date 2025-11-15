@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.2] - 2025-11-15
+
+### Fixed
+- **Interactive CLI fixes**: Several fixes to make interactive mode more user-friendly
+  - Fixed special-folder handling for both input and output paths (Desktop, Downloads, Documents, Pictures, Videos, Music)
+  - Fixed output path resolution when users enter common folder names (now correctly maps to the user's special folders)
+  - Improved helpful tips when a path cannot be found (suggests tried shortcuts and examples)
+  - Ensured horcrux header wording correctly references the required threshold (not the total)
+
 ## [1.2.0] - 2025-11-15
 
 ### Improved
