@@ -78,8 +78,9 @@ pip-delete-this-directory.txt
 *.temp
 .cache/
 
-# Example horcrux files (for testing)
+# Horcrux files (for testing)
 *.horcrux
+*.hrcx
 
 # Ruff
 .ruff_cache/
