@@ -412,7 +412,7 @@ Please make sure to:
 
 ### Reporting Vulnerabilities
 
-If you discover a security vulnerability, please email security@example.com instead of using the issue tracker.
+If you discover a security vulnerability, please email jjgpleunes@gmail.com instead of using the issue tracker.
 
 ### Security Considerations
 
