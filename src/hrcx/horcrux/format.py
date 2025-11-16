@@ -135,6 +135,7 @@ def create_horcrux_header(
 # THIS IS HORCRUX NUMBER {index}.
 # IN ORDER TO RESURRECT THIS ORIGINAL FILE YOU MUST FIND AT LEAST {others_needed} OTHER HORCRUX(ES) AND THEN BIND THEM USING THE HRCX PROGRAM
 # https://pypi.org/project/hrcx/
+# https://github.com/juliuspleunes4/horcrux
 
 -- HEADER --
 {header_json}
