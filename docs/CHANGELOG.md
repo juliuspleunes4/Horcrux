@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.4] - 2025-11-16
+
+### Fixed
+- **Interactive CLI path handling**: Fixed special folder shortcuts with trailing slashes in ALL input locations
+  - "Desktop/" now correctly resolves to the user's Desktop folder (was creating a "Desktop" folder in the project directory)
+  - "Downloads/", "Documents/", etc. now work correctly with trailing slashes
+  - Fixed in split command's output directory prompt (was still using direct os.path.abspath without folder shortcut handling)
+  - Fixed in bind command's output path prompt (also needed trailing slash handling)
+  - Path normalization improved to strip trailing slashes before checking folder shortcuts
+  - All three input locations (file paths, directory paths, and manual prompts) now consistently handle shortcuts
+
 ## [1.2.2] - 2025-11-15
 
 ### Fixed

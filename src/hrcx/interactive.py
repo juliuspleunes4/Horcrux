@@ -20,7 +20,7 @@ from hrcx.horcrux.format import find_horcrux_files
 init(autoreset=True)
 
 # Version info
-VERSION = "1.2.2"
+VERSION = "1.2.4"
 PYPI_URL = "https://pypi.org/project/hrcx/"
 GITHUB_URL = "https://github.com/juliuspleunes4/Horcrux"
 
@@ -47,7 +47,7 @@ def print_header() -> None:
     
     print(ascii_art)
     print(f"{Fore.LIGHTBLACK_EX}------------------------------------------------------------")
-    print(f"{Fore.LIGHTBLACK_EX}  Split your files into encrypted fragments")
+    print(f"{Fore.LIGHTBLACK_EX}  Split your files into encrypted fragments.")
     print(f"{Fore.LIGHTBLACK_EX}  Version:  {VERSION}")
     print(f"{Fore.LIGHTBLACK_EX}  PyPI:     {PYPI_URL}")
     print(f"{Fore.LIGHTBLACK_EX}  GitHub:   {GITHUB_URL}")
@@ -130,7 +130,7 @@ def get_file_path(prompt: str, must_exist: bool = True) -> str:
                 continue
             
             # Handle common folder shortcuts (case-insensitive)
-            path_lower = path.lower()
+            path_lower = path.lower().rstrip('/\\')  # Remove trailing slashes
             common_folders = {
                 'desktop': os.path.join(os.path.expanduser('~'), 'Desktop'),
                 'downloads': os.path.join(os.path.expanduser('~'), 'Downloads'),
@@ -140,13 +140,18 @@ def get_file_path(prompt: str, must_exist: bool = True) -> str:
                 'music': os.path.join(os.path.expanduser('~'), 'Music'),
             }
             
+            # Check if path is exactly a common folder name (after stripping slashes)
+            if path_lower in common_folders:
+                path = common_folders[path_lower]
             # Check if path starts with a common folder name
-            for folder_name, folder_path in common_folders.items():
-                if path_lower.startswith(folder_name + '\\') or path_lower.startswith(folder_name + '/'):
-                    # Replace the folder name with the actual path
-                    remaining_path = path[len(folder_name)+1:]
-                    path = os.path.join(folder_path, remaining_path)
-                    break
+            else:
+                original_path_lower = path.lower()
+                for folder_name, folder_path in common_folders.items():
+                    if original_path_lower.startswith(folder_name + '\\') or original_path_lower.startswith(folder_name + '/'):
+                        # Replace the folder name with the actual path
+                        remaining_path = path[len(folder_name)+1:]
+                        path = os.path.join(folder_path, remaining_path)
+                        break
             
             # Expand user home directory (~)
             path = os.path.expanduser(path)
@@ -198,7 +203,7 @@ def get_directory_path(prompt: str, must_exist: bool = False) -> str:
                 continue
             
             # Handle common folder shortcuts (case-insensitive)
-            path_lower = path.lower()
+            path_lower = path.lower().rstrip('/\\')  # Remove trailing slashes
             common_folders = {
                 'desktop': os.path.join(os.path.expanduser('~'), 'Desktop'),
                 'downloads': os.path.join(os.path.expanduser('~'), 'Downloads'),
@@ -208,17 +213,18 @@ def get_directory_path(prompt: str, must_exist: bool = False) -> str:
                 'music': os.path.join(os.path.expanduser('~'), 'Music'),
             }
             
+            # Check if path is exactly a common folder name (after stripping slashes)
+            if path_lower in common_folders:
+                path = common_folders[path_lower]
             # Check if path starts with a common folder name
-            for folder_name, folder_path in common_folders.items():
-                if path_lower.startswith(folder_name + '\\') or path_lower.startswith(folder_name + '/'):
-                    # Replace the folder name with the actual path
-                    remaining_path = path[len(folder_name)+1:]
-                    path = os.path.join(folder_path, remaining_path)
-                    break
-                elif path_lower == folder_name:
-                    # User just typed the folder name
-                    path = folder_path
-                    break
+            else:
+                original_path_lower = path.lower()
+                for folder_name, folder_path in common_folders.items():
+                    if original_path_lower.startswith(folder_name + '\\') or original_path_lower.startswith(folder_name + '/'):
+                        # Replace the folder name with the actual path
+                        remaining_path = path[len(folder_name)+1:]
+                        path = os.path.join(folder_path, remaining_path)
+                        break
             
             # Expand user home directory (~)
             path = os.path.expanduser(path)
@@ -323,15 +329,43 @@ def interactive_split() -> None:
     while True:
         try:
             print_prompt("📁 Output directory (or press Enter): ")
-            output_dir = input().strip().strip('"').strip("'")
+            output_dir_input = input().strip().strip('"').strip("'")
             
-            if not output_dir:
+            if not output_dir_input:
                 output_dir = None
                 print(f"{Fore.LIGHTBLACK_EX}   Using input file directory{Style.RESET_ALL}")
                 break
             
+            # Handle common folder shortcuts (case-insensitive)
+            path_lower = output_dir_input.lower().rstrip('/\\')
+            common_folders = {
+                'desktop': os.path.join(os.path.expanduser('~'), 'Desktop'),
+                'downloads': os.path.join(os.path.expanduser('~'), 'Downloads'),
+                'documents': os.path.join(os.path.expanduser('~'), 'Documents'),
+                'pictures': os.path.join(os.path.expanduser('~'), 'Pictures'),
+                'videos': os.path.join(os.path.expanduser('~'), 'Videos'),
+                'music': os.path.join(os.path.expanduser('~'), 'Music'),
+            }
+            
+            # Check if path is exactly a common folder name (after stripping slashes)
+            if path_lower in common_folders:
+                output_dir_input = common_folders[path_lower]
+            # Check if path starts with a common folder name
+            else:
+                original_path_lower = output_dir_input.lower()
+                for folder_name, folder_path in common_folders.items():
+                    if original_path_lower.startswith(folder_name + '\\') or original_path_lower.startswith(folder_name + '/'):
+                        # Replace the folder name with the actual path
+                        remaining_path = output_dir_input[len(folder_name)+1:]
+                        output_dir_input = os.path.join(folder_path, remaining_path)
+                        break
+            
+            # Expand user home directory and environment variables
+            output_dir_input = os.path.expanduser(output_dir_input)
+            output_dir_input = os.path.expandvars(output_dir_input)
+            
             # Validate the output directory
-            abs_output_dir = os.path.abspath(output_dir)
+            abs_output_dir = os.path.abspath(output_dir_input)
             
             # Check if parent directory exists (we can create the final dir if needed)
             parent_dir = os.path.dirname(abs_output_dir) if not os.path.dirname(abs_output_dir) == abs_output_dir else abs_output_dir
@@ -464,7 +498,7 @@ def interactive_bind() -> None:
                     break
                 
                 # Handle common folder shortcuts (case-insensitive)
-                output_path_lower = output_path.lower()
+                output_path_lower = output_path.lower().rstrip('/\\')  # Remove trailing slashes
                 common_folders = {
                     'desktop': os.path.join(os.path.expanduser('~'), 'Desktop'),
                     'downloads': os.path.join(os.path.expanduser('~'), 'Downloads'),
@@ -474,17 +508,19 @@ def interactive_bind() -> None:
                     'music': os.path.join(os.path.expanduser('~'), 'Music'),
                 }
                 
+                # Check if path is exactly a common folder name (after stripping slashes)
+                if output_path_lower in common_folders:
+                    # User just typed the folder name - append the original filename
+                    output_path = os.path.join(common_folders[output_path_lower], header.original_filename)
                 # Check if path starts with a common folder name
-                for folder_name, folder_path in common_folders.items():
-                    if output_path_lower.startswith(folder_name + '\\') or output_path_lower.startswith(folder_name + '/'):
-                        # Replace the folder name with the actual path
-                        remaining_path = output_path[len(folder_name)+1:]
-                        output_path = os.path.join(folder_path, remaining_path)
-                        break
-                    elif output_path_lower == folder_name:
-                        # User just typed the folder name - append the original filename
-                        output_path = os.path.join(folder_path, header.original_filename)
-                        break
+                else:
+                    original_path_lower = output_path.lower()
+                    for folder_name, folder_path in common_folders.items():
+                        if original_path_lower.startswith(folder_name + '\\') or original_path_lower.startswith(folder_name + '/'):
+                            # Replace the folder name with the actual path
+                            remaining_path = output_path[len(folder_name)+1:]
+                            output_path = os.path.join(folder_path, remaining_path)
+                            break
                 
                 # Expand user home directory (~)
                 output_path = os.path.expanduser(output_path)
