@@ -448,9 +448,9 @@ Check out Jesse's other amazing projects:
 
 ## 📞 Support
 
-- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/yourusername/horcrux/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/yourusername/horcrux/discussions)
-- 📖 **Documentation**: [Wiki](https://github.com/yourusername/horcrux/wiki)
+- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/juliuspleunes4/horcrux/issues)
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/juliuspleunes4/horcrux/discussions)
+- 📖 **Documentation**: [Wiki](https://github.com/juliuspleunes4/horcrux/wiki)
 
 ## 🗺 Roadmap
 
